@@ -11,6 +11,7 @@ public class Enemy : MovingObject {
     private bool skipMove;
     public AudioClip enemyAttack1;
     public AudioClip enemyAttack2;
+    bool move = false;
 
 
     protected override void Start () {
@@ -34,11 +35,27 @@ public class Enemy : MovingObject {
         int yDir = 0;
 
         if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon)
+        {
             yDir = target.position.y > transform.position.y ? 1 : -1;
-        else
-            xDir = target.position.x > transform.position.x ? 1 : -1;
+            if (CanMove(xDir, yDir) == false)
+            {
+                yDir = 0;
+                xDir = target.position.x > transform.position.x ? 1 : -1;
+            }
+        }
 
+        else
+        {
+            xDir = target.position.x > transform.position.x ? 1 : -1;
+            if (CanMove(xDir, yDir) == false)
+            {
+                xDir = 0;
+                yDir = target.position.y > transform.position.y ? 1 : -1;
+            }
+        }
+        
         AttemptMove<Player>(xDir, yDir);
+
     }
 
 

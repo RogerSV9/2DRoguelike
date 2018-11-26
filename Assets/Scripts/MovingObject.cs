@@ -33,6 +33,23 @@ public abstract class MovingObject : MonoBehaviour {
         return false;
     }
 
+    protected bool CanMove(int xDir, int yDir)
+    {
+        RaycastHit2D hit;
+        Vector2 start = transform.position;
+        Vector2 end = start + new Vector2(xDir, yDir);
+
+        boxCollider.enabled = false;
+        hit = Physics2D.Linecast(start, end, blockingLayer);
+        boxCollider.enabled = true;
+        if (hit.transform == null)
+        {
+            //StartCoroutine(SmoothMovement(end));
+            return true;
+        }
+        return false;
+    }
+
     protected IEnumerator SmoothMovement(Vector3 end) {
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
